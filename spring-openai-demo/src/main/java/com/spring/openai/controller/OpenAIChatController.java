@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/openai/api/")
+@RequestMapping("/api/")
 public class OpenAIChatController {
 
     private final OpenAIChatService openAIChatService;
@@ -15,8 +15,13 @@ public class OpenAIChatController {
         this.openAIChatService=openAIChatService;
     }
 
-    @GetMapping("/chat")
-    private String chatWithLlm(String prompt){
-        return openAIChatService.chatWithOpenAiLlm(prompt);
+    @GetMapping("/ollama")
+    private String chatWithOllama(String prompt){
+        return openAIChatService.chatWithOllama(prompt);
+    }
+
+    @GetMapping("/openApi")
+    private String chatWithOpenApi(String prompt){
+        return openAIChatService.chatWithOpenApi(prompt);
     }
 }

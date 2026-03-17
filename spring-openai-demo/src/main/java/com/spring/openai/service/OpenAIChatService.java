@@ -7,13 +7,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class OpenAIChatService {
 
-    private final ChatClient chatClient;
+    private final ChatClient openAiChatClient;
 
-    public OpenAIChatService(ChatClient.Builder chatClientBuilder){
-        this.chatClient=chatClientBuilder.build();
+    private final ChatClient ollamaChatClient;
+
+    public OpenAIChatService(ChatClient openAiChatClient,ChatClient ollamaChatClient){
+        this.openAiChatClient=openAiChatClient;
+        this.ollamaChatClient=ollamaChatClient;
     }
 
-    public String chatWithOpenAiLlm(String prompt){
-        return chatClient.prompt(prompt).call().content();
+    public String chatWithOpenApi(String prompt){
+        return openAiChatClient.prompt(prompt).call().content();
+    }
+
+    public String chatWithOllama(String prompt){
+        return ollamaChatClient.prompt(prompt).call().content();
     }
 }
