@@ -6,9 +6,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OpenAIChatService {
-
-    private final ChatClient openAiChatClient;
-
+    //For multi-model two clients are needed
+    /*private final ChatClient openAiChatClient;
     private final ChatClient ollamaChatClient;
 
     public OpenAIChatService(ChatClient openAiChatClient,ChatClient ollamaChatClient){
@@ -22,5 +21,17 @@ public class OpenAIChatService {
 
     public String chatWithOllama(String prompt){
         return ollamaChatClient.prompt(prompt).call().content();
+    }*/
+
+    private final ChatClient chatClient;
+
+    public OpenAIChatService(ChatClient.Builder chatClientBuilder){
+        this.chatClient=chatClientBuilder.build();
     }
+
+    public String chatWithOpenAi(String message){
+        return chatClient.prompt(message).call().content();
+    }
+
+
 }

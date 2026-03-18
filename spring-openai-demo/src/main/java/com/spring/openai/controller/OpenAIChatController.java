@@ -12,10 +12,11 @@ public class OpenAIChatController {
     private final OpenAIChatService openAIChatService;
 
     public OpenAIChatController(OpenAIChatService openAIChatService){
+
         this.openAIChatService=openAIChatService;
     }
-
-    @GetMapping("/ollama")
+    //Multi-model chat
+    /*@GetMapping("/ollama")
     private String chatWithOllama(String prompt){
         return openAIChatService.chatWithOllama(prompt);
     }
@@ -23,5 +24,10 @@ public class OpenAIChatController {
     @GetMapping("/openApi")
     private String chatWithOpenApi(String prompt){
         return openAIChatService.chatWithOpenApi(prompt);
+    }*/
+
+    @GetMapping("openAi")
+    private String chatWithOpenApi(String message){
+        return openAIChatService.chatWithOpenAi(message);
     }
 }
