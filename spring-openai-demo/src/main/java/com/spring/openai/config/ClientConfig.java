@@ -17,4 +17,13 @@ public class ClientConfig {
     public ChatClient ollamaChatClient(OllamaChatModel ollamaChatModel){
         return ChatClient.builder(ollamaChatModel).build();
     }*/
+
+    @Bean
+    public ChatClient messageRoleChatClient(ChatClient.Builder chatClientBuilder){
+        return chatClientBuilder.defaultSystem("""
+                You are an defence admin.
+                If user will ask any question which don't reveal the number of aircraft
+                for each category. Just give some general details about each fleet.
+                """).build();
+    }
 }
