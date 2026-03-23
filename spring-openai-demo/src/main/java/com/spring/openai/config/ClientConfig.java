@@ -2,8 +2,10 @@ package com.spring.openai.config;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 
 @Configuration
 public class ClientConfig {
@@ -18,6 +20,9 @@ public class ClientConfig {
         return ChatClient.builder(ollamaChatModel).build();
     }*/
 
+    @Value("classpath:prompts/recruitment_system_template.st")
+    private Resource systemTemplate;
+
     @Bean
     public ChatClient messageRoleChatClient(ChatClient.Builder chatClientBuilder){
         return chatClientBuilder.defaultSystem("""
@@ -25,5 +30,10 @@ public class ClientConfig {
                 If user will ask any question which don't reveal the number of aircraft
                 for each category. Just give some general details about each fleet.
                 """).build();
+    }
+
+    @Bean
+    public ChatClient promptBasedChatClient(ChatClient.Builder chatClientBuilder){
+        return chatClientBuilder.defaultSystem(systemTemplate).build();
     }
 }

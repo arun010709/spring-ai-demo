@@ -4,6 +4,8 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,10 +20,17 @@ public class MessageChatService {
             """;
 
     private final ChatClient messageRoleChatClient;
+    private final ChatClient promptBasedChatClient;
 
-    public MessageChatService(ChatClient messageRoleChatClient){
+    @Value("classpath:prompts/recruitment_user_template.st")
+    private Resource userTemplate;
+
+
+
+    public MessageChatService(ChatClient messageRoleChatClient,ChatClient promptBasedChatClient){
         //chatClient=chatClientBuilder.build();
         this.messageRoleChatClient=messageRoleChatClient;
+        this.promptBasedChatClient =promptBasedChatClient;
     }
 
     public String getFleetDetails(String input){
@@ -56,6 +65,14 @@ public class MessageChatService {
                 """.formatted(FLEET_DETAILS,input))
                 .call()
                 .content();
+    }
+
+    public String recruitmentProcess(String age,String serviceType,String qualification){
+        return promptBasedChatClient.prompt().
+                user(promptUserSpec -> promptUserSpec.text(userTemplate)
+                                .param("age",age)
+                                .param("serviceType",serviceType)
+                                .param("qualification",qualification)).call().content();
     }
 
 
