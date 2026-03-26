@@ -2,9 +2,13 @@ package com.spring.openai.controller;
 
 import com.spring.openai.service.MessageChatService;
 import com.spring.openai.service.OpenAIChatService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+
+import java.awt.*;
 
 @RestController
 @RequestMapping("/api/")
@@ -43,4 +47,16 @@ public class OpenAIChatController {
         return messageChatService.recruitmentProcess(age,serviceType,qualification,questions);
 
     }
+
+    @GetMapping("chatOptions")
+    private String chatOptions(String message){
+        return messageChatService.chatOptions(message);
+    }
+
+    //Stream LLM response using flux.
+    /*@GetMapping(value="chatOptions",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    private Flux<String> chatOptions(String message){
+        return messageChatService.chatOptions(message);
+
+    }*/
 }

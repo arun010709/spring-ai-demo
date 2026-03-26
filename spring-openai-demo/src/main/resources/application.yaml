@@ -13,6 +13,13 @@ spring:
     openai:
      api-key: ${OPEN_API_KEY}
 
+#     chat:
+#       options:
+#         model: "gpt-4o"
+#         temperature: 0.1
+#         max-tokens: 1000
+
+
 logging:
   level:
     org:

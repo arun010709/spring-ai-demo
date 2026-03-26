@@ -1,11 +1,14 @@
 package com.spring.openai.config;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
+
+import java.util.List;
 
 @Configuration
 public class ClientConfig {
@@ -35,5 +38,22 @@ public class ClientConfig {
     @Bean
     public ChatClient promptBasedChatClient(ChatClient.Builder chatClientBuilder){
         return chatClientBuilder.defaultSystem(systemTemplate).build();
+    }
+
+    @Bean
+    public ChatClient chatOptionsChatClient(ChatClient.Builder chatClientBuilder){
+        //chatOptions control behaviour of LLM response
+        return chatClientBuilder
+                .defaultOptions(ChatOptions.builder()
+                        .model("gpt-4o")
+                        .temperature(0.1)
+                        .maxTokens(1000)
+                        .frequencyPenalty(0.7)
+                        .presencePenalty(0.7)
+                        //.topK(1)
+                        .topP(1d)
+                        .stopSequences(List.of("}"))
+                        .build())
+                .build();
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -24,16 +25,18 @@ public class MessageChatService {
 
     private final ChatClient messageRoleChatClient;
     private final ChatClient promptBasedChatClient;
+    private final ChatClient chatOptionsChatClient;
 
     @Value("classpath:prompts/recruitment_user_template.st")
     private Resource userTemplate;
 
 
 
-    public MessageChatService(ChatClient messageRoleChatClient,ChatClient promptBasedChatClient){
+    public MessageChatService(ChatClient messageRoleChatClient,ChatClient promptBasedChatClient,ChatClient chatOptionsChatClient){
         //chatClient=chatClientBuilder.build();
         this.messageRoleChatClient=messageRoleChatClient;
         this.promptBasedChatClient =promptBasedChatClient;
+        this.chatOptionsChatClient=chatOptionsChatClient;
     }
 
     public String getFleetDetails(String input){
@@ -71,7 +74,9 @@ public class MessageChatService {
     }
 
     public String recruitmentProcess(String age,String serviceType,String qualification,String questions){
-        return promptBasedChatClient.prompt().advisors(List.of(new SimpleLoggerAdvisor(),
+        return promptBasedChatClient.prompt()
+                        //Advisors-Like AOP to execute pre and post processing logic like logging,input validation etc.
+                        .advisors(List.of(new SimpleLoggerAdvisor(),
                         new SafeGuardAdvisor(List.of("tactics","posting","bribe"),
                                 "Sorry, but we cannot disclose sensitive information!",1)
                         ,new AuditTokenUsageAdvisor())).
@@ -80,6 +85,15 @@ public class MessageChatService {
                                 .param("serviceType",serviceType)
                                 .param("qualification",qualification)
                                 .param("questions",questions)).call().content();
+    }
+
+    public String chatOptions(String message){
+        return chatOptionsChatClient.prompt()
+                //.advisors(new SimpleLoggerAdvisor())
+                .user(message)
+                //To stream response
+                //.stream().content();
+                .call().content();
     }
 
 
