@@ -1,6 +1,9 @@
 package com.spring.openai.service;
 
+import com.spring.openai.advisor.AuditTokenUsageAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.SafeGuardAdvisor;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -67,12 +70,16 @@ public class MessageChatService {
                 .content();
     }
 
-    public String recruitmentProcess(String age,String serviceType,String qualification){
-        return promptBasedChatClient.prompt().
-                user(promptUserSpec -> promptUserSpec.text(userTemplate)
+    public String recruitmentProcess(String age,String serviceType,String qualification,String questions){
+        return promptBasedChatClient.prompt().advisors(List.of(new SimpleLoggerAdvisor(),
+                        new SafeGuardAdvisor(List.of("tactics","posting","bribe"),
+                                "Sorry, but we cannot disclose sensitive information!",1)
+                        ,new AuditTokenUsageAdvisor())).
+                        user(promptUserSpec -> promptUserSpec.text(userTemplate)
                                 .param("age",age)
                                 .param("serviceType",serviceType)
-                                .param("qualification",qualification)).call().content();
+                                .param("qualification",qualification)
+                                .param("questions",questions)).call().content();
     }
 
 

@@ -39,8 +39,8 @@ public class OpenAIChatController {
     }
 
     @GetMapping("recruitment")
-    private String getRecruitmentDetails(String age,String serviceType,String qualification){
-        return messageChatService.recruitmentProcess(age,serviceType,qualification);
+    private String getRecruitmentDetails(String age,String serviceType,String qualification,String questions){
+        return messageChatService.recruitmentProcess(age,serviceType,qualification,questions);
 
     }
 }
