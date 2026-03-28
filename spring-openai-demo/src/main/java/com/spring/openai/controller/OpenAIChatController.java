@@ -90,4 +90,10 @@ public class OpenAIChatController {
     private List<Aircraft> getAircraftList(String message){
         return aircraftDetailsService.getAircraftList(message);
     }
+
+    //return type List<CustomObject>
+    @GetMapping("chatMemoryAircraftResponse")
+    private String chatMemoryAircraftResponse(String message,String username){
+        return aircraftDetailsService.chatMemoryBasedAircraftResponse(message,username);
+    }
 }

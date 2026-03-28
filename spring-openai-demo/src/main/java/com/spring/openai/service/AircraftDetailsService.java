@@ -12,16 +12,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.ai.chat.memory.ChatMemory.CONVERSATION_ID;
+
 @Service
 public class AircraftDetailsService {
 
     private final ChatClient chatClient;
-
+    private final ChatClient memoryBasedChatClient;
     @Value("classpath:prompts/aircraft_system_template.st")
     private Resource aircraftSystemTemplate;
 
-    public AircraftDetailsService(ChatClient.Builder chatClientBuilder){
+    public AircraftDetailsService(ChatClient.Builder chatClientBuilder,ChatClient memoryBasedChatClient){
         this.chatClient=chatClientBuilder.build();
+        this.memoryBasedChatClient=memoryBasedChatClient;
     }
 
     public Aircraft getAircraftDetails(String message){
@@ -50,5 +53,13 @@ public class AircraftDetailsService {
                 .system(aircraftSystemTemplate)
                 .user(message).call()
                 .entity(new ParameterizedTypeReference<>() {});
+    }
+
+    public String chatMemoryBasedAircraftResponse(String message,String username) {
+        return memoryBasedChatClient.prompt(message)
+                //Overriding the default conversation id for better context management
+                .advisors(advisorSpec -> advisorSpec.param(CONVERSATION_ID,username))
+                .call()
+                .content();
     }
 }

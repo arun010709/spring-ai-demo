@@ -1,6 +1,10 @@
 package com.spring.openai.config;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,6 +58,16 @@ public class ClientConfig {
                         .topP(1d)
                         .stopSequences(List.of("}"))
                         .build())
+                .build();
+    }
+
+    @Bean
+    public ChatClient memoryBasedChatClient(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory){
+        //chatMemory to store context of the chat
+        Advisor loggerAdvisor = new SimpleLoggerAdvisor();
+        Advisor chatMemoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory).build();
+        return chatClientBuilder
+                .defaultAdvisors(List.of(loggerAdvisor,chatMemoryAdvisor))
                 .build();
     }
 }
