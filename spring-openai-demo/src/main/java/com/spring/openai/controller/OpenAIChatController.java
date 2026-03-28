@@ -91,7 +91,7 @@ public class OpenAIChatController {
         return aircraftDetailsService.getAircraftList(message);
     }
 
-    //return type List<CustomObject>
+    //Chat Memory implementation
     @GetMapping("chatMemoryAircraftResponse")
     private String chatMemoryAircraftResponse(String message,String username){
         return aircraftDetailsService.chatMemoryBasedAircraftResponse(message,username);

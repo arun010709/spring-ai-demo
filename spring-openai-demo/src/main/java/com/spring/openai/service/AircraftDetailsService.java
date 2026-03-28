@@ -55,6 +55,8 @@ public class AircraftDetailsService {
                 .entity(new ParameterizedTypeReference<>() {});
     }
 
+
+    //Chat Memory implementation
     public String chatMemoryBasedAircraftResponse(String message,String username) {
         return memoryBasedChatClient.prompt(message)
                 //Overriding the default conversation id for better context management
