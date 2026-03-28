@@ -49,7 +49,6 @@ public class AircraftDetailsService {
         return chatClient.prompt()
                 .system(aircraftSystemTemplate)
                 .user(message).call()
-                .entity(new ParameterizedTypeReference<>() {
-                });
+                .entity(new ParameterizedTypeReference<>() {});
     }
 }
