@@ -2,6 +2,12 @@ spring:
   application:
     name: spring-openai-demo
 
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/arun
+    username: root
+    password: Arun@123
+
 #  ai:
 #    ollama:
 #      base-url: http://localhost:11434/
@@ -12,6 +18,11 @@ spring:
   ai:
     openai:
      api-key: ${OPEN_API_KEY}
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: ALWAYS
 
 #     chat:
 #       options:

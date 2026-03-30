@@ -5,6 +5,8 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
+import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,6 +61,12 @@ public class ClientConfig {
                         .stopSequences(List.of("}"))
                         .build())
                 .build();
+    }
+
+    @Bean
+    public ChatMemory chatMemory(JdbcChatMemoryRepository jdbcChatMemoryRepository){
+        return MessageWindowChatMemory.builder().maxMessages(5).
+                chatMemoryRepository(jdbcChatMemoryRepository).build();
     }
 
     @Bean
