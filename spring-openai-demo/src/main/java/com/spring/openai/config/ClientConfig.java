@@ -78,4 +78,18 @@ public class ClientConfig {
                 .defaultAdvisors(List.of(loggerAdvisor,chatMemoryAdvisor))
                 .build();
     }
+
+    @Bean
+    public ChatClient chatClient(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory){
+        //chatMemory to store context of the chat
+        Advisor loggerAdvisor = new SimpleLoggerAdvisor();
+
+        Advisor memoryAdvisor = MessageChatMemoryAdvisor
+                .builder(chatMemory)
+                .build();
+
+        return chatClientBuilder
+                .defaultAdvisors(List.of(loggerAdvisor, memoryAdvisor))
+                .build();
+    }
 }

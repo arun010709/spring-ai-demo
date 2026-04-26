@@ -24,6 +24,18 @@ spring:
           jdbc:
             initialize-schema: ALWAYS
 
+    vectorstore:
+     qdrant:
+       initialize-schema: true
+       host: localhost
+       port: 6334
+       collection-name: sampleData
+
+     docker:
+        compose:
+          stop:
+            command: DOWN
+
 #     chat:
 #       options:
 #         model: "gpt-4o"
