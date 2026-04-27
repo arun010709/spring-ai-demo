@@ -50,7 +50,7 @@ public class RAGController {
                 .map(Document::getText)
                 .toList();
 
-        // A+ G - Generation
+        // A+ G - Augmentation(prompt+similar results) + Generation
         String results = chatClient.prompt()
                 .system(promptSystemSpec ->
                         promptSystemSpec

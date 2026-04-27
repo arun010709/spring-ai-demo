@@ -16,7 +16,7 @@ public class RAGSampleDataLoader {
         this.vectorStore = vectorStore;
     }
 
-    @PostConstruct
+    //@PostConstruct
     public void loadSampleDataToVectorStore() {
 
         List<String> sampleData = getSampleData();

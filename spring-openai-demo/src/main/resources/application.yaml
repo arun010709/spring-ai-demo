@@ -29,7 +29,7 @@ spring:
        initialize-schema: true
        host: localhost
        port: 6334
-       collection-name: sampleData
+       collection-name: IAFRecruitmentPolicy
 
      docker:
         compose:
