@@ -113,19 +113,19 @@ Programmatically removes documents based on metadata or custom rules to reduce "
 ## Use Case
 - Ideal for stripping sensitive data (PII) or deduplicating similar content before the augmentation step.
 
-# Features Comparison
+# Quick Comparison Table in Markdown Format for Interview Notes
 
-| Feature | Pre-Processor | Post-Processor |
-|---------|-----------------|--------------|
-| **Timing** | | |
-| Before Vector Search |  |  |
-| After Vector Search |  |  |
-| **Input** |  |  |
-| Raw User Query |  |  |
-| Retrieved Document Chunks |  |  |
-| **Goal** |  |  |
-| Improve search accuracy |  |  |
-| Improve context quality |  |  |
-| **Example** |  |  |
-| TranslationQueryTransformer |  |  |
-| SimpleFilteringPostProcessor |  |  |
+### **Pre-Processor vs. Post-Processor in Spring AI**
+
+| Feature | Pre-Processor (Query Transformer) | Post-Processor (Document Post-Processor) |
+| :--- | :--- | :--- |
+| **Timing** | Executes **before** the Vector Search[cite: 2]. | Executes **after** Search but **before** LLM Generation[cite: 2]. |
+| **Input** | Modifies the raw **User Query**[cite: 2]. | Modifies the **Retrieved Documents**[cite: 2]. |
+| **Goal** | Improves search accuracy and intent[cite: 2]. | Improves context quality and filters "noise"[cite: 2]. |
+| **Example** | `TranslationQueryTransformer`[cite: 2]. | `SimpleFilteringPostProcessor`[cite: 2]. |
+
+---
+
+### **Interview Summary**
+*   **Pre-processors** ensure the system **finds** the right data (e.g., by translating the query)[cite: 2].
+*   **Post-processors** ensure the LLM only **sees** the most relevant data (e.g., by filtering out low-quality chunks)[cite: 2].
