@@ -33,7 +33,7 @@ public class RAGController {
     public String connectToRagAI(@RequestParam String prompt,
                                  @RequestHeader String username) {
 
-        // R - Retrieval query
+        /*// R - Retrieval query-Without RAG Advisor
         SearchRequest searchRequest =
                 SearchRequest.builder()
                         .query(prompt)
@@ -45,7 +45,7 @@ public class RAGController {
         List<Document> similarDocuments = vectorStore
                 .similaritySearch(searchRequest);
 
-        // extract the text content from the retrieved documents
+        // A-Augmentation - processed fetched documents
         List<String> similarResults = similarDocuments.stream()
                 .map(Document::getText)
                 .toList();
@@ -58,13 +58,16 @@ public class RAGController {
                                 .param("documents", similarResults))
                 .advisors(adviceSpec ->
                         adviceSpec.param(CONVERSATION_ID, username)
-                )
+                )//Augmentation
                 .user(prompt)
                 .call()
-                .content();
+                .content();*/
 
 
-        return results;
+        return chatClient.
+                prompt().advisors(adviceSpec ->
+                        adviceSpec.param(CONVERSATION_ID, username))
+                .user(prompt).call().content();
 
     }
 }
